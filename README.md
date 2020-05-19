@@ -1,3 +1,2 @@
 # music-partition
-
-Python way to separate flat directory of music files into folders based on music metadata.
+Python app which takes a flat directory of music files and partitions them into folders based on metadata. Useful for Google Music downloads.
