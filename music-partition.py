@@ -13,8 +13,7 @@ def main():
         print('#'*69 + '\n' + 'PARTITIONS' + '\n'+'#'*69)
         print([(k,len(v)) for k,v in partitions.items()])
     else:
-        save(partitions, args.out)
-
+        save(partitions, args)
   
 def parse():
     '''
@@ -24,6 +23,7 @@ def parse():
     parser = argparse.ArgumentParser(description='Partition Music files into subdirectories based on metadata.')
     parser.add_argument('-d','--directory',dest='dir',type=str, default=dir_default, help='the directory to find files in')
     parser.add_argument('-o','--output',dest='out',type=str, default=None, help='the directory to save the files in')
+    parser.add_argument('-c','--clean', dest='clean', type=str, default=None, help='if specified, will replace this regex in the music file with blank')
     parser.add_argument('-t','--test','--debug','--dryrun',action='store_true', dest='debug',help='If set, shows the groupings but does not execute')
 
     args = parser.parse_args()
@@ -44,7 +44,7 @@ def get_files(directory):
     '''
     gets the array of files to partition
     '''
-    music_exts = ['mp3','flac','wav','ogg','wma','aiff','aac','ra']
+    music_exts = ['mp3','flac','wav','ogg','wma','aiff','aac','ra','dsd','dsf']
     files = [os.path.join(directory, f) for f in os.listdir(directory)]
     files = [f for f in files if os.path.isfile(f) and f.split('.')[-1] in music_exts]
     return files
@@ -76,24 +76,45 @@ def partition(files):
     return partitions
 
 
-def save(partitions,savedir):
+def save(partitions,args):
     '''
     Moves files into partitions at base directory savedir
     '''
+    savedir = args.out
+
     for folder,files in partitions.items():
         if not os.path.isdir(os.path.join(savedir,folder)):
             os.mkdir(os.path.join(savedir,folder))
+            
         for file in files:
             originaldir, filename = os.path.split(file)
+            if (args.clean or '') != '':
+                filename = clean_filename(filename, args.clean)
             os.rename(file, os.path.join(savedir,folder,filename))
     
+def clean_filename(filename,clean):
+    """
+    custom formatting for the new file name
+    """
+    try:
+        return re.sub(clean, '', filename)
+    except:
+        return filename
+    
 
-def slugify(value):
+def slugify_legacy(value):
     """
     Normalizes string for file-friendliness
     """
     s = str(value).strip().replace(' ', '_')
     return re.sub(r'(?u)[^-\w.]', '', s)
+
+def slugify(value):
+    """
+    Normalizes string for file-friendliness
+    """
+    s = str(value).strip()
+    return re.sub(r'<|>|:|"|\/|\\|\||\?|\*', '', s)
 
 
 
