@@ -9,6 +9,8 @@ def main():
     args = parse()
     bins = bin_files(args.dir)
     print(f"{'#'*69}\nFILES TYPES\n{'#'*69}")
+    bins = [(k,v) for k,v in bins.items()]
+    bins.sort(key = lambda x: x[1]) 
     print(bins)
     
   
