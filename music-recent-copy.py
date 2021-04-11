@@ -64,7 +64,7 @@ def is_music(f):
     """
     returns if path, f, is a music file
     """
-    music_exts = ['mp3','flac','wav','ogg','wma','aiff','aac','ra','dsd','dsf']
+    music_exts = ['3gp','aa','aac','aax','act','aiff','alac','amr','ape','au','awb','dct','dss','dsd','dsf','dvf','flac','gsm','iklax','ivs','m4a','m4b','m4p','mmf','mp3','mpc','msv','nmf','ogg,','opus','ra,','raw','rf64','sln','tta','voc','vox','wav','wma','wv','webm','8svx','cda']
 
     return f.split('.')[-1] in music_exts
 
