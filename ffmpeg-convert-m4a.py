@@ -13,7 +13,7 @@ def main():
 	for file in get_files(args.dir):
 		print(f"working on {file}")
 		newfile = f"{''.join(file.split('.')[:-1])}.{FORMAT}"
-		cmd = f"ffmpeg -i \"{file}\" -c:a libfdk_aac -b:a 384k -map_metadata:s:a 0:s:a -loglevel error \"{newfile}\""
+		cmd = f"ffmpeg -i \"{file}\" -map 0 -c copy -map_metadata:s:a 0:s:a -loglevel error \"{newfile}\""
 		print(cmd)
 		os.system(cmd)
 
