@@ -24,9 +24,9 @@ TAG_MAP = {
     ('mp3','album'):'album',
 
     ('m4a','track'): 'trkn',
-    ('m4a','title'):'\\xa9nam',
-    ('m4a','artist'):'\\xa9ART',
-    ('m4a','album'):'\\xa9alb',
+    ('m4a','title'):'\xa9nam',
+    ('m4a','artist'):'\xa9ART',
+    ('m4a','album'):'\xa9alb',
 }
 
 def main():
@@ -108,7 +108,7 @@ def tag_file(args,filepath):
     except:
         audio = mutagen.File(filepath, easy=True)
         audio.add_tags()
-
+    
     #global
     if not args.no_album and not ('album' in args.groups):
         directory = os.path.basename(args.dir)
@@ -120,7 +120,6 @@ def tag_file(args,filepath):
         if tag_type is not None:
             tag = parsed_name.group(i+1).strip()
             tag = clean_tag(ext,group,tag)
-            print(filename,tag_type,tag)
             audio[tag_type] = tag
 
     #save
