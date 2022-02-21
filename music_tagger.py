@@ -88,7 +88,8 @@ def tag_file(args,filepath):
     """
     tags the file
     """
-
+    print('-------------')
+    
     #file stuff
     filename = os.path.basename(filepath)
     ext = get_ext(filepath)
@@ -112,7 +113,9 @@ def tag_file(args,filepath):
     #global
     if not args.no_album and not ('album' in args.groups):
         directory = os.path.basename(args.dir)
-        audio['album'] = directory
+        tag_type = TAG_MAP[(ext,'album')]
+        print('TAGGING',tag_type,directory)
+        audio[tag_type] = directory
     
     #loop through
     for i,group in enumerate(args.groups):
@@ -120,6 +123,7 @@ def tag_file(args,filepath):
         if tag_type is not None:
             tag = parsed_name.group(i+1).strip()
             tag = clean_tag(ext,group,tag)
+            print('TAGGING',tag_type,tag)
             audio[tag_type] = tag
 
     #save
